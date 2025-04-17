@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Portfolio</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav id="navbar">
+            <div class="logo">
+                <h1>Dev<span>Portfolio</span></h1>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1 class="animate-text">Hello, I'm <span>Pankaj Rayal</span></h1>
+                <h2 class="animate-text delay-1">Full Stack Web Developer</h2>
+                <p class="animate-text delay-2">Creating responsive and accessible web experiences</p>
+                <div class="cta-buttons animate-text delay-3">
+                    <a href="#projects" class="btn primary-btn">View My Work</a>
+                    <a href="#contact" class="btn secondary-btn">Contact Me</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://placehold.co/350x200" alt="Profile picture of Alex Johnson" class="profile-img">
+            </div>
+        </section>
+
+        <section id="about" class="about">
+            <h2 class="section-title">About Me</h2>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>I'm a passionate web developer with a focus on creating beautiful, functional, and accessible websites. With 5 years of experience in the industry, I've worked on a variety of projects from small business sites to large enterprise applications.</p>
+                    <p>My approach combines technical expertise with creative problem-solving to deliver solutions that not only look great but also provide an excellent user experience across all devices.</p>
+                    <div class="theme-toggle">
+                        <label for="theme-switch">Dark Mode</label>
+                        <input type="checkbox" id="theme-switch">
+                    </div>
+                </div>
+                <div class="about-stats">
+                    <div class="stat">
+                        <h3>5+</h3>
+                        <p>Years Experience</p>
+                    </div>
+                    <div class="stat">
+                        <h3>50+</h3>
+                        <p>Projects Completed</p>
+                    </div>
+                    <div class="stat">
+                        <h3>30+</h3>
+                        <p>Happy Clients</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects" class="projects">
+            <h2 class="section-title">My Projects</h2>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="web">Web Development</button>
+                <button class="filter-btn" data-filter="design">UI/UX Design</button>
+                <button class="filter-btn" data-filter="app">Mobile Apps</button>
+            </div>
+            <div class="projects-grid">
+                <div class="project-card" data-category="web">
+                    <img src="https://via.placeholder.com/350x200" alt="E-commerce website screenshot">
+                    <div class="project-info">
+                        <h3>E-commerce Platform</h3>
+                        <p>A full-featured online store with payment processing and inventory management.</p>
+                        <div class="project-tags">
+                            <span>React</span>
+                            <span>Node.js</span>
+                            <span>MongoDB</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" aria-label="View live demo of E-commerce Platform"><i class="fas fa-external-link-alt"></i></a>
+                            <a href="#" aria-label="View source code of E-commerce Platform on GitHub"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card" data-category="design">
+                    <img src="https://via.placeholder.com/350x200" alt="Mobile app UI design">
+                    <div class="project-info">
+                        <h3>Finance App UI</h3>
+                        <p>Clean and intuitive interface design for a personal finance management app.</p>
+                        <div class="project-tags">
+                            <span>Figma</span>
+                            <span>UI/UX</span>
+                            <span>Prototyping</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" aria-label="View live demo of Finance App UI"><i class="fas fa-external-link-alt"></i></a>
+                            <a href="#" aria-label="View source file of Finance App UI on Figma"><i class="fab fa-figma"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card" data-category="app">
+                    <img src="https://via.placeholder.com/350x200" alt="Fitness tracking app screenshot">
+                    <div class="project-info">
+                        <h3>Fitness Tracker</h3>
+                        <p>Mobile application for tracking workouts and monitoring fitness progress.</p>
+                        <div class="project-tags">
+                            <span>React Native</span>
+                            <span>Firebase</span>
+                            <span>Redux</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" aria-label="View live demo of Fitness Tracker app"><i class="fas fa-external-link-alt"></i></a>
+                            <a href="#" aria-label="View source code of Fitness Tracker on GitHub"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card" data-category="web">
+                    <img src="https://via.placeholder.com/350x200" alt="Blog website screenshot">
+                    <div class="project-info">
+                        <h3>Content Management System</h3>
+                        <p>Custom-built CMS for bloggers with markdown support and SEO tools.</p>
+                        <div class="project-tags">
+                            <span>Vue.js</span>
+                            <span>Express</span>
+                            <span>PostgreSQL</span>
+                        </div>
+                        <div class="project-links">
+                            <a href="#" aria-label="View live demo of Content Management System"><i class="fas fa-external-link-alt"></i></a>
+                            <a href="#" aria-label="View source code of Content Management System on GitHub"><i class="fab fa-github"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="skills">
+            <h2 class="section-title">My Skills</h2>
+            <div class="skills-container">
+                <div class="skill-category">
+                    <h3>Frontend</h3>
+                    <div class="skill-bars">
+                        <div class="skill">
+                            <div class="skill-name">HTML5/CSS3</div>
+                            <div class="skill-bar">
+                                <div class="skill-level" data-level="95%"></div>
+                            </div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-name">JavaScript</div>
+                            <div class="skill-bar">
+                                <div class="skill-level" data-level="90%"></div>
+                            </div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-name">React</div>
+                            <div class="skill-bar">
+                                <div class="skill-level" data-level="85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="skill-category">
+                    <h3>Backend</h3>
+                    <div class="skill-bars">
+                        <div class="skill">
+                            <div class="skill-name">Node.js</div>
+                            <div class="skill-bar">
+                                <div class="skill-level" data-level="80%"></div>
+                            </div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-name">Express</div>
+                            <div class="skill-bar">
+                                <div class="skill-level" data-level="75%"></div>
+                            </div>
+                        </div>
+                        <div class="skill">
+                            <div class="skill-name">MongoDB</div>
+                            <div class="skill-bar">
+                                <div class="skill-level" data-level="70%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="contact">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <p>pankaj@example.com</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <p>(123) 456-7890</p>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>San Francisco, CA</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" aria-label="LinkedIn Profile"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" aria-label="GitHub Profile"><i class="fab fa-github"></i></a>
+                        <a href="#" aria-label="Twitter Profile"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Medium Blog"><i class="fab fa-medium"></i></a>
+                    </div>
+                </div>
+                <form id="contact-form" class="contact-form">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn primary-btn">Send Message</button>
+                    <p id="form-status" class="form-status"></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <h3>Dev<span>Portfolio</span></h3>
+            </div>
+            <p>&copy; 2025 Rayal Systems. All rights reserved.</p>
+            <div class="scroll-top">
+                <a href="#home" aria-label="Scroll to top"><i class="fas fa-arrow-up"></i></a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
