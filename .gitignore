@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs
+/EventEase/.vs
+/EventEase/EventEase/bin/Debug/net9.0
+/EventEase/EventEase/obj
