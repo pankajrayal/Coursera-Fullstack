@@ -1,0 +1,82 @@
+﻿@inject UserSessionService UserSession
+
+<div class="top-row ps-3 navbar navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="">EventEase</a>
+  </div>
+</div>
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+  <nav class="nav flex-column">
+    <div class="nav-item px-3">
+      <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+        <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+      </NavLink>
+    </div>
+
+    <div class="nav-item px-3">
+      <NavLink class="nav-link" href="events">
+        <span class="oi oi-list-rich" aria-hidden="true"></span> Events
+      </NavLink>
+    </div>
+    <div class="nav-item px-3">
+      <NavLink class="nav-link" href="events/123">
+        <span class="oi oi-info" aria-hidden="true"></span> Event Details
+      </NavLink>
+    </div>
+
+    <div class="nav-item px-3">
+      <NavLink class="nav-link" href="attendance">
+        <span class="oi oi-check" aria-hidden="true"></span> Attendance Tracker
+      </NavLink>
+    </div>
+
+
+    @if(UserSession.IsLoggedIn) {
+      <div class="nav-item px-3">
+        <span class="nav-link">Welcome, @UserSession.Username!</span>
+      </div>
+      <div class="nav-item px-3">
+        <button class="btn btn-link nav-link" @onclick="Logout">Logout</button>
+      </div>
+    } else {
+      <div class="nav-item px-3">
+        <NavLink class="nav-link" href="register">
+          <span class="oi oi-pencil" aria-hidden="true"></span> Register
+        </NavLink>
+      </div>
+    }
+
+    <div class="nav-item px-3">
+      <NavLink class="nav-link" href="counter">
+        <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
+      </NavLink>
+    </div>
+
+    <div class="nav-item px-3">
+      <NavLink class="nav-link" href="weather">
+        <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+      </NavLink>
+    </div>
+  </nav>
+</div>
+
+@code {
+  private bool collapseNavMenu = true;
+
+  private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+  private void ToggleNavMenu() {
+    collapseNavMenu = !collapseNavMenu;
+  }
+
+  private void CollapseNavMenu() {
+    collapseNavMenu = true;
+  }
+
+  private void Logout() {
+    UserSession.Logout();
+  }
+}

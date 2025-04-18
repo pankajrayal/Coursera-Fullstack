@@ -1,0 +1,27 @@
+﻿<div class="event-card">
+  <h2>@EventName</h2>
+  <p>Date: @EventDate.ToShortDateString()</p>
+  <p>Location: @EventLocation</p>
+  <a href="/eventdetails/@EventName">View Details</a>
+</div>
+<div class="edit-section">
+  <h4>Edit Event</h4>
+  <div>
+    <label>Name:</label>
+    <input type="text" @bind="EventName" />
+  </div>
+  <div>
+    <label>Date:</label>
+    <input type="date" @bind="EventDate" />
+  </div>
+  <div>
+    <label>Location:</label>
+    <input type="text" @bind="EventLocation" />
+  </div>
+</div>
+
+@code {
+  [Parameter] public string EventName { get; set; } = "Tech Conference 2025";
+  [Parameter] public DateTime EventDate { get; set; } = new DateTime(2025, 5, 15);
+  [Parameter] public string EventLocation { get; set; } = "Plano Convention Center";
+}

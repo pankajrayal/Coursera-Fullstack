@@ -1,0 +1,44 @@
+﻿@page "/attendance"
+@using System.ComponentModel.DataAnnotations
+@inject UserSessionService UserSession
+
+<h3>Attendance Tracker</h3>
+
+@if(!UserSession.IsLoggedIn) {
+  <p>Please log in to track attendance.</p>
+} else {
+  <EditForm Model="@attendanceModel" OnValidSubmit="HandleAttendanceSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+      <label for="eventName" class="form-label">Event Name</label>
+      <InputText id="eventName" class="form-control" @bind-Value="attendanceModel.EventName" />
+      <ValidationMessage For="@(() => attendanceModel.EventName)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Mark Attendance</button>
+  </EditForm>
+
+  <h4>Attendance Records</h4>
+  <ul>
+    @foreach(var record in attendanceRecords) {
+      <li>@record</li>
+    }
+  </ul>
+}
+
+@code {
+  private AttendanceModel attendanceModel = new();
+  private List<string> attendanceRecords = new();
+
+  private void HandleAttendanceSubmit() {
+    attendanceRecords.Add($"{UserSession.Username} attended {attendanceModel.EventName}");
+    attendanceModel = new(); // Reset form
+  }
+
+  public class AttendanceModel {
+    [Required(ErrorMessage = "Event Name is required")]
+    public string EventName { get; set; } = string.Empty;
+  }
+}
