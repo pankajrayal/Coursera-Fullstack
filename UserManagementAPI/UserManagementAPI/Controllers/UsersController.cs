@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using UserManagementAPI.Database;
 using UserManagementAPI.Models;
 
 namespace UserManagementAPI.Controllers {
@@ -6,49 +8,105 @@ namespace UserManagementAPI.Controllers {
   [ApiController]
   public class UsersController: ControllerBase {
     private static List<User> users = new List<User>();
+    private readonly ApplicationDbContext _context;
 
-    // GET: api/users
+    public UsersController(ApplicationDbContext context) {
+      _context = context;
+    }
+
     [HttpGet]
-    public ActionResult<IEnumerable<User>> GetUsers() {
-      return Ok(users);
+    public async Task<ActionResult<IEnumerable<User>>> GetUsers([FromQuery] int page = 1, [FromQuery] int pageSize = 10) {
+      try {
+        if(page <= 0 || pageSize <= 0) {
+          return BadRequest(new { Message = "Page and PageSize must be greater than 0." });
+        }
+
+        var totalUsers = await _context.Users.CountAsync();
+        var paginatedUsers = await _context.Users
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+
+        return Ok(new {
+          TotalCount = totalUsers,
+          Page = page,
+          PageSize = pageSize,
+          Data = paginatedUsers
+        });
+      } catch(Exception ex) {
+        Console.Error.WriteLine($"An error occurred in GetUsers: {ex.Message}");
+        return StatusCode(500, new { Message = "An internal server error occurred." });
+      }
     }
 
-    // GET: api/users/{id}
+
     [HttpGet("{id}")]
-    public ActionResult<User> GetUserById(int id) {
-      var user = users.FirstOrDefault(u => u.Id == id);
-      return user != null ? Ok(user) : NotFound();
+    public async Task<ActionResult<User>> GetUserById(int id) {
+      try {
+        var user = await _context.Users.FindAsync(id);
+        if(user == null) {
+          Console.Error.WriteLine($"User with ID {id} not found.");
+          return NotFound(new { Message = $"User with ID {id} not found." });
+        }
+        return Ok(user);
+      } catch(Exception ex) {
+        Console.Error.WriteLine($"An error occurred in GetUserById: {ex.Message}");
+        return StatusCode(500, new { Message = "An internal server error occurred." });
+      }
     }
 
-    // POST: api/users
     [HttpPost]
-    public ActionResult<User> CreateUser(User user) {
-      user.Id = users.Count + 1;
-      users.Add(user);
-      return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
+    public async Task<ActionResult<User>> CreateUser([FromBody] User user) {
+      try {
+        if(!ModelState.IsValid) {
+          return BadRequest(ModelState);
+        }
+
+        _context.Users.Add(user);
+        await _context.SaveChangesAsync();
+
+        return CreatedAtAction(nameof(GetUserById), new { id = user.Id }, user);
+      } catch(Exception ex) {
+        Console.Error.WriteLine($"An error occurred in CreateUser: {ex.Message}");
+        return StatusCode(500, new { Message = "An internal server error occurred." });
+      }
     }
 
-    // PUT: api/users/{id}
     [HttpPut("{id}")]
-    public IActionResult UpdateUser(int id, User updatedUser) {
-      var user = users.FirstOrDefault(u => u.Id == id);
-      if(user == null) return NotFound();
+    public async Task<IActionResult> UpdateUser(int id, [FromBody] User updatedUser) {
+      try {
+        if(!ModelState.IsValid) {
+          return BadRequest(ModelState);
+        }
 
-      user.Name = updatedUser.Name;
-      user.Email = updatedUser.Email;
-      user.Department = updatedUser.Department;
+        var user = await _context.Users.FindAsync(id);
+        if(user == null) return NotFound();
 
-      return NoContent();
+        user.Name = updatedUser.Name;
+        user.Email = updatedUser.Email;
+        user.Department = updatedUser.Department;
+
+        await _context.SaveChangesAsync();
+        return NoContent();
+      } catch(Exception ex) {
+        Console.Error.WriteLine($"An error occurred in UpdateUser: {ex.Message}");
+        return StatusCode(500, new { Message = "An internal server error occurred." });
+      }
     }
 
-    // DELETE: api/users/{id}
     [HttpDelete("{id}")]
-    public IActionResult DeleteUser(int id) {
-      var user = users.FirstOrDefault(u => u.Id == id);
-      if(user == null) return NotFound();
+    public async Task<IActionResult> DeleteUser(int id) {
+      try {
+        var user = await _context.Users.FindAsync(id);
+        if(user == null) return NotFound();
 
-      users.Remove(user);
-      return NoContent();
+        _context.Users.Remove(user);
+        await _context.SaveChangesAsync();
+        return NoContent();
+      } catch(Exception ex) {
+        Console.Error.WriteLine($"An error occurred in DeleteUser: {ex.Message}");
+        return StatusCode(500, new { Message = "An internal server error occurred." });
+      }
     }
   }
 }

@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Alice Johnson",
+    "email": "alice.updated@example.com",
+    "department": "HR"
+  },
+  {
+    "name": "Michael Smith",
+    "email": "michael.smith@example.com",
+    "department": "IT"
+  },
+  {
+    "name": "Emma Davis",
+    "email": "emma.davis@example.com",
+    "department": "Finance"
+  },
+  {
+    "name": "James Wilson",
+    "email": "james.wilson@example.com",
+    "department": "Marketing"
+  },
+  {
+    "name": "Sophia Martinez",
+    "email": "sophia.martinez@example.com",
+    "department": "Sales"
+  },
+  {
+    "name": "William Brown",
+    "email": "william.brown@example.com",
+    "department": "HR"
+  },
+  {
+    "name": "Olivia Taylor",
+    "email": "olivia.taylor@example.com",
+    "department": "Operations"
+  },
+  {
+    "name": "Benjamin Anderson",
+    "email": "benjamin.anderson@example.com",
+    "department": "Legal"
+  },
+  {
+    "name": "Charlotte Thomas",
+    "email": "charlotte.thomas@example.com",
+    "department": "IT"
+  },
+  {
+    "name": "Daniel Hernandez",
+    "email": "daniel.hernandez@example.com",
+    "department": "Support"
+  }
+]
