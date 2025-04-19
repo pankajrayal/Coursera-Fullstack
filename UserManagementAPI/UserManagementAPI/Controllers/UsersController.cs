@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 using UserManagementAPI.Database;
 using UserManagementAPI.Models;
 
@@ -107,6 +112,40 @@ namespace UserManagementAPI.Controllers {
         Console.Error.WriteLine($"An error occurred in DeleteUser: {ex.Message}");
         return StatusCode(500, new { Message = "An internal server error occurred." });
       }
+    }
+
+    [AllowAnonymous]
+    [HttpPost("generate-token")]
+    public IActionResult GenerateToken([FromBody] User user) {
+      // Validate the user (this is a simple example, replace with actual validation logic)
+      var existingUser = _context.Users.FirstOrDefault(u => u.Email == user.Email);
+      if(existingUser == null) {
+        return Unauthorized(new { Message = "Invalid user credentials." });
+      }
+
+      // Access the configuration through a properly injected IConfiguration service
+      var jwtKey = Environment.GetEnvironmentVariable("JWT_KEY");
+      if(string.IsNullOrEmpty(jwtKey)) {
+        return StatusCode(500, new { Message = "JWT key is not configured." });
+      }
+
+      // Generate the token
+      var tokenHandler = new JwtSecurityTokenHandler();
+      var key = Encoding.UTF8.GetBytes(jwtKey);
+      var tokenDescriptor = new SecurityTokenDescriptor {
+        Subject = new ClaimsIdentity(new[]
+        {
+          new Claim(ClaimTypes.Name, existingUser.Name),
+          new Claim(ClaimTypes.Email, existingUser.Email)
+        }),
+        Expires = DateTime.UtcNow.AddHours(1),
+        SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+      };
+
+      var token = tokenHandler.CreateToken(tokenDescriptor);
+      var tokenString = tokenHandler.WriteToken(token);
+
+      return Ok(new { Token = tokenString });
     }
   }
 }
