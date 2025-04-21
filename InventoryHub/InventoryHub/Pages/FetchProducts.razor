@@ -1,4 +1,5 @@
 ﻿@page "/fetchproducts"
+@using System.Text.Json
 @inject HttpClient Http
 
 <h3>Product List</h3>
@@ -24,13 +25,13 @@
 
   protected override async Task OnInitializedAsync() {
     try {
-      var response = await Http.GetAsync("http://localhost:5210/api/products");
+      var response = await Http.GetAsync("http://localhost:5210/api/productlist");
 
-      if(response.IsSuccessStatusCode) {
-        products = await response.Content.ReadFromJsonAsync<Product[]>();
-      } else {
-        errorMessage = $"Failed to load products. Status code: {response.StatusCode}";
-      }
+      response.EnsureSuccessStatusCode();
+
+      var json = await response.Content.ReadAsStringAsync();
+      products = JsonSerializer.Deserialize<Product[]>(json);
+
     } catch(HttpRequestException ex) {
       errorMessage = $"Network error: {ex.Message}";
     } catch(Exception ex) {

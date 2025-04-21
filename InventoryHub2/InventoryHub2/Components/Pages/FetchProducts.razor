@@ -1,0 +1,96 @@
+﻿@page "/fetchproducts"
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@inject HttpClient Http
+@inject IHttpClientFactory HttpClientFactory
+
+<h3>Product List</h3>
+
+@if(isLoading) {
+  <p>Loading products...</p>
+} else if(errorMessage != null) {
+  <p style="color:red;">Error: @errorMessage</p>
+} else if(products != null) {
+  <ul>
+    @foreach(var product in products) {
+      <li>
+        @product.Name - $@product.Price (Stock: @product.Stock)
+        <br />
+        Category: @product.Category.Name
+      </li>
+    }
+  </ul>
+  <button @onclick="RefreshProducts">Refresh</button>
+} else {
+  <p>No products found.</p>
+}
+
+@code {
+  private static Product[]? cachedProducts;
+  private Product[]? products;
+  private bool isLoading = true;
+  private string? errorMessage;
+
+  protected override async Task OnInitializedAsync() {
+    if(cachedProducts != null) {
+      products = cachedProducts;
+      isLoading = false;
+      return;
+    }
+
+    await LoadProducts();
+  }
+
+  private async Task LoadProducts() {
+    try {
+      var client = HttpClientFactory.CreateClient("InventoryHub2");
+      var response = await client.GetAsync("api/productlist");
+
+      response.EnsureSuccessStatusCode();
+
+      var json = await response.Content.ReadAsStringAsync();
+      products = JsonSerializer.Deserialize<Product[]>(json);
+
+      if(products == null) {
+        errorMessage = "Failed to deserialize products.";
+      }
+    } catch(HttpRequestException ex) {
+      errorMessage = $"Network error: {ex.Message}";
+    } catch(Exception ex) {
+      errorMessage = $"Unexpected error: {ex.Message}";
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  private async Task RefreshProducts() {
+    cachedProducts = null; // Clear the cache
+    isLoading = true;
+    await LoadProducts();
+  }
+
+  public class Product {
+    [JsonPropertyName("id")]
+    public int Id { get; set; }
+
+    [JsonPropertyName("name")]
+    public string Name { get; set; }
+
+    [JsonPropertyName("price")]
+    public double Price { get; set; }
+
+    [JsonPropertyName("stock")]
+    public int Stock { get; set; }
+
+    [JsonPropertyName("category")]
+    public Category Category { get; set; } = default!;
+  }
+
+  public class Category {
+    [JsonPropertyName("id")]
+    public int Id { get; set; }
+
+    [JsonPropertyName("name")]
+    public string Name { get; set; }
+  }
+}
