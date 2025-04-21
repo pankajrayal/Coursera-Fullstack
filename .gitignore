@@ -9,3 +9,8 @@
 /UserManagementAPI/.vs
 /UserManagementAPI/UserManagementAPI/bin/Debug/net9.0
 /UserManagementAPI/UserManagementAPI/obj
+/InventoryHub/.vs/InventoryHub
+/InventoryHub/InventoryHub/bin/Debug/net9.0
+/InventoryHub/InventoryHub/obj
+/InventoryHub/InventoryHub.Api/bin/Debug/net9.0
+/InventoryHub/InventoryHub.Api/obj

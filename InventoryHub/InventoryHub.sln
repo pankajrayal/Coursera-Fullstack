@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35828.75 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryHub", "InventoryHub\InventoryHub.csproj", "{34A06CE9-D979-4252-BAA2-CB84FE934390}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InventoryHub.Api", "InventoryHub.Api\InventoryHub.Api.csproj", "{CE438947-ADFD-4581-BF70-D6FB01F98556}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{34A06CE9-D979-4252-BAA2-CB84FE934390}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34A06CE9-D979-4252-BAA2-CB84FE934390}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34A06CE9-D979-4252-BAA2-CB84FE934390}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34A06CE9-D979-4252-BAA2-CB84FE934390}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE438947-ADFD-4581-BF70-D6FB01F98556}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE438947-ADFD-4581-BF70-D6FB01F98556}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE438947-ADFD-4581-BF70-D6FB01F98556}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE438947-ADFD-4581-BF70-D6FB01F98556}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6042F097-4281-4E14-9E90-AD2D9C849482}
+	EndGlobalSection
+EndGlobal

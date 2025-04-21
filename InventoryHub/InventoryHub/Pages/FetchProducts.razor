@@ -1,0 +1,49 @@
+﻿@page "/fetchproducts"
+@inject HttpClient Http
+
+<h3>Product List</h3>
+
+@if(isLoading) {
+  <p>Loading products...</p>
+} else if(errorMessage != null) {
+  <p style="color:red;">Error: @errorMessage</p>
+} else if(products != null) {
+  <ul>
+    @foreach(var product in products) {
+      <li>@product.Name - $@product.Price (Stock: @product.Stock)</li>
+    }
+  </ul>
+} else {
+  <p>No products found.</p>
+}
+
+@code {
+  private Product[]? products;
+  private bool isLoading = true;
+  private string? errorMessage;
+
+  protected override async Task OnInitializedAsync() {
+    try {
+      var response = await Http.GetAsync("http://localhost:5210/api/products");
+
+      if(response.IsSuccessStatusCode) {
+        products = await response.Content.ReadFromJsonAsync<Product[]>();
+      } else {
+        errorMessage = $"Failed to load products. Status code: {response.StatusCode}";
+      }
+    } catch(HttpRequestException ex) {
+      errorMessage = $"Network error: {ex.Message}";
+    } catch(Exception ex) {
+      errorMessage = $"Unexpected error: {ex.Message}";
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  public class Product {
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public double Price { get; set; }
+    public int Stock { get; set; }
+  }
+}
