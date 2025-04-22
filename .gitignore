@@ -22,3 +22,9 @@
 /UserAuthInMemoryApp/.vs/UserAuthInMemoryApp
 /UserAuthInMemoryApp/bin/Debug/net9.0
 /UserAuthInMemoryApp/obj
+/JwtAuthDemo/.vs/JwtAuthDemo
+/JwtAuthDemo/JwtAuthDemo/bin/Debug/net9.0
+/JwtAuthDemo/JwtAuthDemo/obj
+/RoleAndClaims/.vs
+/RoleAndClaims/RoleAndClaims/bin/Debug/net9.0
+/RoleAndClaims/RoleAndClaims/obj
