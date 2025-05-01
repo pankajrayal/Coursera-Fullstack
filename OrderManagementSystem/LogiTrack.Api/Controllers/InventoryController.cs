@@ -1,10 +1,12 @@
 ﻿using LogiTrack.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace LogiTrack.Api.Controllers {
   [Route("api/[controller]")]
   [ApiController]
+  [Authorize]
   public class InventoryController: ControllerBase {
     private readonly LogiTrackContext _context;
 
@@ -27,6 +29,7 @@ namespace LogiTrack.Api.Controllers {
     }
 
     [HttpPost]
+    [Authorize(Roles = "Manager")]
     public async Task<ActionResult<InventoryItem>> CreateInventoryItem(InventoryItem item) {
       _context.InventoryItems.Add(item);
       await _context.SaveChangesAsync();
@@ -47,6 +50,7 @@ namespace LogiTrack.Api.Controllers {
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> DeleteInventoryItem(int id) {
       var item = await _context.InventoryItems.FindAsync(id);
       if(item == null) {

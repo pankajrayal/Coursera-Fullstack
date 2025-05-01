@@ -1,4 +1,5 @@
 ﻿using LogiTrack.Api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -6,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 namespace LogiTrack.Api.Controllers {
   [Route("api/[controller]")]
   [ApiController]
+  [Authorize]
   public class OrderController: ControllerBase {
     private readonly LogiTrackContext _context;
 
@@ -28,6 +30,7 @@ namespace LogiTrack.Api.Controllers {
     }
 
     [HttpPost]
+    [Authorize(Roles = "Manager")]
     public async Task<ActionResult<Order>> CreateOrder(Order order) {
       _context.Orders.Add(order);
       await _context.SaveChangesAsync();
@@ -48,6 +51,7 @@ namespace LogiTrack.Api.Controllers {
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Manager")]
     public async Task<IActionResult> DeleteOrder(int id) {
       var order = await _context.Orders.FindAsync(id);
       if(order == null) {
