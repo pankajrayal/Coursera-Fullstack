@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace LogiTrack.Api.Controllers {
   [Route("api/[controller]")]
@@ -9,26 +10,25 @@ namespace LogiTrack.Api.Controllers {
   [Authorize]
   public class OrderController: ControllerBase {
     private readonly LogiTrackContext _context;
+    private readonly IMemoryCache _cache;
 
-    public OrderController(LogiTrackContext context) {
+    public OrderController(LogiTrackContext context, IMemoryCache cache) {
       _context = context;
+      _cache = cache;
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Order>>> GetOrders() {
-      var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+      if(!_cache.TryGetValue("OrdersCache", out List<Order> orders)) {
+        orders = await _context.Orders
+            .Include(o => o.Items)
+            .AsNoTracking()
+            .ToListAsync();
 
-      // Simulate caching logic (if caching is implemented)
-      var orders = await _context.Orders
-          .Include(o => o.Items)
-          .AsNoTracking()
-          .ToListAsync();
-
-      stopwatch.Stop();
-      var elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
-
-      // Log or return the timing information for analysis
-      Console.WriteLine($"Execution Time: {elapsedMilliseconds} ms");
+        var cacheOptions = new MemoryCacheEntryOptions()
+            .SetSlidingExpiration(TimeSpan.FromMinutes(5));
+        _cache.Set("OrdersCache", orders, cacheOptions);
+      }
 
       return Ok(orders);
     }
