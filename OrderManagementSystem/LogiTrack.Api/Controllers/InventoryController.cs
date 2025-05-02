@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace LogiTrack.Api.Controllers {
   [Route("api/[controller]")]
@@ -9,14 +10,29 @@ namespace LogiTrack.Api.Controllers {
   [Authorize]
   public class InventoryController: ControllerBase {
     private readonly LogiTrackContext _context;
-
-    public InventoryController(LogiTrackContext context) {
+    private readonly IMemoryCache _cache;
+    public InventoryController(LogiTrackContext context, IMemoryCache cache) {
       _context = context;
+      _cache = cache;
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<InventoryItem>>> GetInventoryItems() {
-      return await _context.InventoryItems.ToListAsync();
+      const string cacheKey = "InventoryList";
+      if(!_cache.TryGetValue(cacheKey, out List<InventoryItem> inventoryItems)) {
+        // Data not in cache, retrieve from database
+        inventoryItems = await _context.InventoryItems.ToListAsync();
+
+        // Set cache options
+        var cacheOptions = new MemoryCacheEntryOptions {
+          AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30)
+        };
+
+        // Store data in cache
+        _cache.Set(cacheKey, inventoryItems, cacheOptions);
+      }
+
+      return Ok(inventoryItems);
     }
 
     [HttpGet("{id}")]
@@ -34,6 +50,9 @@ namespace LogiTrack.Api.Controllers {
       _context.InventoryItems.Add(item);
       await _context.SaveChangesAsync();
 
+      // Invalidate cache
+      _cache.Remove("InventoryList");
+
       return CreatedAtAction(nameof(GetInventoryItem), new { id = item.ItemId }, item);
     }
 
@@ -45,6 +64,9 @@ namespace LogiTrack.Api.Controllers {
 
       _context.Entry(item).State = EntityState.Modified;
       await _context.SaveChangesAsync();
+
+      // Invalidate cache
+      _cache.Remove("InventoryList");
 
       return NoContent();
     }
@@ -59,6 +81,9 @@ namespace LogiTrack.Api.Controllers {
 
       _context.InventoryItems.Remove(item);
       await _context.SaveChangesAsync();
+
+      // Invalidate cache
+      _cache.Remove("InventoryList");
 
       return NoContent();
     }

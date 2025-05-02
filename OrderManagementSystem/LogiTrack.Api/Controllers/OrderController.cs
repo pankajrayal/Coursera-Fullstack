@@ -1,6 +1,5 @@
 ﻿using LogiTrack.Api.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,12 +16,30 @@ namespace LogiTrack.Api.Controllers {
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Order>>> GetOrders() {
-      return await _context.Orders.Include(o => o.Items).ToListAsync();
+      var stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
+      // Simulate caching logic (if caching is implemented)
+      var orders = await _context.Orders
+          .Include(o => o.Items)
+          .AsNoTracking()
+          .ToListAsync();
+
+      stopwatch.Stop();
+      var elapsedMilliseconds = stopwatch.ElapsedMilliseconds;
+
+      // Log or return the timing information for analysis
+      Console.WriteLine($"Execution Time: {elapsedMilliseconds} ms");
+
+      return Ok(orders);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Order>> GetOrder(int id) {
-      var order = await _context.Orders.Include(o => o.Items).FirstOrDefaultAsync(o => o.OrderId == id);
+      var order = await _context.Orders
+          .Include(o => o.Items)
+          .AsNoTracking() // Disable tracking for read-only queries
+          .FirstOrDefaultAsync(o => o.OrderId == id);
+
       if(order == null) {
         return NotFound();
       }
