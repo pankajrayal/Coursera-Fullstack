@@ -20,15 +20,14 @@ namespace LogiTrack.Api.Controllers {
     public async Task<ActionResult<IEnumerable<InventoryItem>>> GetInventoryItems() {
       const string cacheKey = "InventoryList";
       if(!_cache.TryGetValue(cacheKey, out List<InventoryItem> inventoryItems)) {
-        // Data not in cache, retrieve from database
-        inventoryItems = await _context.InventoryItems.ToListAsync();
+        // Rehydrate cache from database
+        inventoryItems = await _context.InventoryItems.AsNoTracking().ToListAsync();
 
-        // Set cache options
+        // Set cache options with longer expiration
         var cacheOptions = new MemoryCacheEntryOptions {
-          AbsoluteExpirationRelativeToNow = TimeSpan.FromSeconds(30)
+          AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(60) // 1 hour expiration
         };
 
-        // Store data in cache
         _cache.Set(cacheKey, inventoryItems, cacheOptions);
       }
 

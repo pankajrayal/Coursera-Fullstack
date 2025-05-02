@@ -12,6 +12,7 @@ namespace LogiTrack.Api.Models {
     public DateTime DatePlaced { get; set; } = DateTime.UtcNow;
 
     public List<InventoryItem> Items { get; set; } = new List<InventoryItem>();
+    public string SessionId { get; set; }
 
     public void AddItem(InventoryItem item) {
       Items.Add(item);

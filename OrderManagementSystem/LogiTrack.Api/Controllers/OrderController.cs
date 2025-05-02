@@ -49,6 +49,7 @@ namespace LogiTrack.Api.Controllers {
     [HttpPost]
     [Authorize(Roles = "Manager")]
     public async Task<ActionResult<Order>> CreateOrder(Order order) {
+      order.SessionId = HttpContext.Session.Id; // Store session ID
       _context.Orders.Add(order);
       await _context.SaveChangesAsync();
 
