@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using SkillSnap.Api.Data;
 using SkillSnap.Api.Models;
 
@@ -10,14 +11,27 @@ namespace SkillSnap.Api.Controllers {
   [ApiController]
   public class ProjectsController: ControllerBase {
     private readonly SkillSnapContext _context;
-
-    public ProjectsController(SkillSnapContext context) {
+    private readonly IMemoryCache _cache;
+    public ProjectsController(SkillSnapContext context, IMemoryCache cache) {
       _context = context;
+      _cache = cache;
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Project>>> GetProjects() {
-      return await _context.Projects.ToListAsync();
+      const string cacheKey = "projects";
+
+      if(!_cache.TryGetValue(cacheKey, out List<Project> projects)) {
+        projects = await _context.Projects.ToListAsync();
+
+        var cacheOptions = new MemoryCacheEntryOptions()
+            .SetAbsoluteExpiration(TimeSpan.FromMinutes(5)) // Cache expires after 5 minutes
+            .SetPriority(CacheItemPriority.Normal); // Adjust priority if needed
+
+        _cache.Set(cacheKey, projects, cacheOptions);
+      }
+
+      return Ok(projects);
     }
 
     [HttpPost]

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using SkillSnap.Api.Data;
 using SkillSnap.Api.Models;
 
@@ -10,14 +11,28 @@ namespace SkillSnap.Api.Controllers {
   [Authorize]
   public class SkillsController: ControllerBase {
     private readonly SkillSnapContext _context;
+    private readonly IMemoryCache _cache;
 
-    public SkillsController(SkillSnapContext context) {
+    public SkillsController(SkillSnapContext context, IMemoryCache cache) {
       _context = context;
+      _cache = cache;
     }
 
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Skill>>> GetSkills() {
-      return await _context.Skills.ToListAsync();
+      const string cacheKey = "skills";
+
+      if(!_cache.TryGetValue(cacheKey, out List<Skill> skills)) {
+        skills = await _context.Skills.ToListAsync();
+
+        var cacheOptions = new MemoryCacheEntryOptions()
+            .SetAbsoluteExpiration(TimeSpan.FromMinutes(5)) // Cache expires after 5 minutes
+            .SetPriority(CacheItemPriority.Normal); // Adjust priority if needed
+
+        _cache.Set(cacheKey, skills, cacheOptions);
+      }
+
+      return Ok(skills);
     }
 
     [HttpPost]

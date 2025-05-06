@@ -44,6 +44,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddEntityFrameworkStores<SkillSnapContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.AddMemoryCache();
+
 var app = builder.Build();
 app.MapControllers();
 
