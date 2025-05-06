@@ -7,6 +7,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
+builder.Services.AddCors(options => {
+  options.AddPolicy("AllowClient", policy => {
+    policy.WithOrigins("http://localhost:5226")
+          .AllowAnyMethod()
+          .AllowAnyHeader();
+  });
+});
 
 // Configure MSSQL Server
 builder.Services.AddDbContext<SkillSnapContext>(options => {
@@ -20,6 +27,7 @@ app.MapControllers();
 if(app.Environment.IsDevelopment()) {
   app.MapOpenApi();
 }
+app.UseCors("AllowClient");
 
 app.UseHttpsRedirection();
 
