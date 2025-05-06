@@ -49,3 +49,5 @@
 /SkillSnap-backup/obj
 /SkillSnap/SkillSnap.Api/obj
 /SkillSnap/SkillSnap.Client/obj
+/SkillSnap/SkillSnap.Api/bin/Debug/net9.0
+/SkillSnap/SkillSnap.Client/bin/Debug/net9.0
