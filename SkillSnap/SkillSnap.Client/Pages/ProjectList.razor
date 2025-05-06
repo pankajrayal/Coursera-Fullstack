@@ -1,0 +1,14 @@
+﻿@code {
+  private List<Project> Projects = new List<Project>
+      {
+        new Project { Title = "Task Tracker", Description = "Manage tasks efficiently" },
+        new Project { Title = "Weather App", Description = "Forecast weather using APIs" }
+    };
+}
+
+@foreach(var project in Projects) {
+  <div class="project-item">
+    <h3>@project.Title</h3>
+    <p>@project.Description</p>
+  </div>
+}

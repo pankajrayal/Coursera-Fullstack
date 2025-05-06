@@ -1,0 +1,28 @@
+﻿@code {
+  [Parameter]
+  public string Name { get; set; } = "Jordan Developer";
+
+  [Parameter]
+  public string Bio { get; set; } = "Full-stack developer passionate about learning new tech.";
+
+  [Parameter]
+  public string ProfileImageUrl { get; set; } = "https://example.com/images/jordan.png";
+}
+
+<div class="profile-card">
+  <img src="@ProfileImageUrl" alt="@Name" class="profile-img" />
+  <h2>@Name</h2>
+  <p>@Bio</p>
+</div>
+
+<style>
+  .profile-card {
+    text-align: center;
+    padding: 10px;
+  }
+
+  .profile-img {
+    width: 100px;
+    border-radius: 50%;
+  }
+</style>

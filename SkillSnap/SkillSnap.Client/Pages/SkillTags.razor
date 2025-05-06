@@ -1,0 +1,23 @@
+﻿@code {
+  private List<string> Skills = new List<string> { "C#", "Blazor", "SQL" };
+}
+
+<div class="skills-container">
+  @foreach(var skill in Skills) {
+    <span class="skill-tag">@skill</span>
+  }
+</div>
+
+<style>
+  .skills-container {
+    display: flex;
+    gap: 5px;
+  }
+
+  .skill-tag {
+    background: #0078D4;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+  }
+</style>
