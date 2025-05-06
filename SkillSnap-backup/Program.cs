@@ -1,6 +1,7 @@
 using SkillSnap.Components;
 using Microsoft.EntityFrameworkCore;
 using SkillSnap.Data;
+using SkillSnap.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +15,10 @@ builder.Services.AddDbContext<SkillSnapContext>(options => {
   options.UseSqlServer(builder.Configuration.GetConnectionString("SkillSnapContext"));
 });
 
+builder.Services.AddScoped<PortfolioUserService>();
+builder.Services.AddScoped<ProjectService>();
+builder.Services.AddScoped<SkillService>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,7 +30,6 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 
 app.UseAntiforgery();
 

@@ -1,0 +1,56 @@
+﻿@page "/portfolio-user-edit/{Id:int?}"
+
+@using SkillSnap.Models
+@using SkillSnap.Services
+@inject PortfolioUserService PortfolioUserService
+@inject NavigationManager NavigationManager
+
+<h3>@(IsEditMode ? "Edit User" : "Add New User")</h3>
+
+<EditForm Model="PortfolioUser" OnValidSubmit="HandleValidSubmit">
+  <DataAnnotationsValidator />
+  <ValidationSummary />
+
+  <div class="mb-3">
+    <label for="name" class="form-label">Name</label>
+    <InputText id="name" class="form-control" @bind-Value="PortfolioUser.Name" />
+  </div>
+
+  <div class="mb-3">
+    <label for="bio" class="form-label">Bio</label>
+    <InputTextArea id="bio" class="form-control" @bind-Value="PortfolioUser.Bio" />
+  </div>
+
+  <button type="submit" class="btn btn-primary">Save</button>
+  <button type="button" class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+</EditForm>
+
+@code {
+  [Parameter]
+  public int? Id { get; set; }
+
+  private PortfolioUser PortfolioUser { get; set; } = new();
+  private bool IsEditMode => Id.HasValue;
+
+  protected override async Task OnInitializedAsync() {
+    if(IsEditMode) {
+      var user = await PortfolioUserService.GetByIdAsync(Id.Value);
+      if(user != null) {
+        PortfolioUser = user;
+      }
+    }
+  }
+
+  private async Task HandleValidSubmit() {
+    if(IsEditMode) {
+      await PortfolioUserService.UpdateAsync(PortfolioUser);
+    } else {
+      await PortfolioUserService.AddAsync(PortfolioUser);
+    }
+    NavigationManager.NavigateTo("/portfolio-users");
+  }
+
+  private void Cancel() {
+    NavigationManager.NavigateTo("/portfolio-users");
+  }
+}

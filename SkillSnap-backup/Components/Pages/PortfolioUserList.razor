@@ -1,0 +1,54 @@
+﻿@using SkillSnap.Models
+@using SkillSnap.Services
+@inject PortfolioUserService PortfolioUserService
+@inject NavigationManager Navigation
+
+@page "/portfolio-users"
+
+<h3>Portfolio Users</h3>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Bio</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach(var user in PortfolioUsers) {
+      <tr>
+        <td>@user.Name</td>
+        <td>@user.Bio</td>
+        <td>
+          <button @onclick="() => EditUser(user.Id)">Edit</button>
+          <button @onclick="() => DeleteUser(user.Id)">Delete</button>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
+
+<button @onclick="AddUser">Add New User</button>
+
+@code {
+  private List<PortfolioUser> PortfolioUsers = new();
+
+  protected override async Task OnInitializedAsync() {
+    PortfolioUsers = await PortfolioUserService.GetAllAsync();
+  }
+
+  private void AddUser() {
+    Console.WriteLine("AddUser method called");
+    Navigation.NavigateTo("/portfolio-user-edit");
+  }
+
+  private void EditUser(int id) {
+    Navigation.NavigateTo($"/portfolio-user-edit/{id}");
+  }
+
+  private async Task DeleteUser(int id) {
+    await PortfolioUserService.DeleteAsync(id);
+    PortfolioUsers = await PortfolioUserService.GetAllAsync();
+  }
+}

@@ -44,3 +44,6 @@
 /SkillSnap/.vs/SkillSnap
 /SkillSnap/.vs/SkillSnap/CopilotIndices/17.13.439.2385/CodeChunks.db
 /SkillSnap/obj
+/SkillSnap-backup/.vs
+/SkillSnap-backup/bin/Debug/net9.0
+/SkillSnap-backup/obj
