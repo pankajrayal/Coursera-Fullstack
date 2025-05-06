@@ -23,11 +23,11 @@ namespace SkillSnap.Api.Controllers {
       const string cacheKey = "skills";
 
       if(!_cache.TryGetValue(cacheKey, out List<Skill> skills)) {
-        skills = await _context.Skills.ToListAsync();
+        skills = await _context.Skills.AsNoTracking().ToListAsync();
 
         var cacheOptions = new MemoryCacheEntryOptions()
-            .SetAbsoluteExpiration(TimeSpan.FromMinutes(5)) // Cache expires after 5 minutes
-            .SetPriority(CacheItemPriority.Normal); // Adjust priority if needed
+            .SetAbsoluteExpiration(TimeSpan.FromMinutes(5))
+            .SetPriority(CacheItemPriority.Normal);
 
         _cache.Set(cacheKey, skills, cacheOptions);
       }
