@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SkillSnap.Api.Data;
+using SkillSnap.Api.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,6 +21,9 @@ builder.Services.AddCors(options => {
 builder.Services.AddDbContext<SkillSnapContext>(options => {
   options.UseSqlServer(builder.Configuration.GetConnectionString("SkillSnapDb"));
 });
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+.AddEntityFrameworkStores<SkillSnapContext>();
 
 var app = builder.Build();
 app.MapControllers();
