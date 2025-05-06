@@ -46,6 +46,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 
 builder.Services.AddMemoryCache();
 
+
 var app = builder.Build();
 app.MapControllers();
 

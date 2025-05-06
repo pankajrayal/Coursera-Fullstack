@@ -2,8 +2,11 @@
 
 @inject NavigationManager Navigation
 @inject AuthService AuthService
+@inject UserSessionService UserSessionService
 
 <h3>Login</h3>
+<h3>Welcome, @UserSessionService.Role</h3>
+
 @if(!string.IsNullOrEmpty(ErrorMessage)) {
   <p style="color: red">@ErrorMessage</p>
 }
@@ -19,6 +22,7 @@
   private async Task PerformLogin() {
     var success = await AuthService.LoginAsync(Email, Password);
     if(success) {
+      UserSessionService.SetUserSession(Email, Email); // Replace with actual API data
       Navigation.NavigateTo("/");
     } else {
       ErrorMessage = "Invalid credentials.";
