@@ -1,0 +1,29 @@
+﻿@using SkillSnap.Client.Services
+
+@inject NavigationManager Navigation
+@inject AuthService AuthService
+
+<h3>Register</h3>
+@if(!string.IsNullOrEmpty(ErrorMessage)) {
+  <p style="color: red">@ErrorMessage</p>
+}
+<input @bind="FullName" placeholder="Full Name" />
+<input @bind="Email" placeholder="Email" />
+<input @bind="Password" type="password" placeholder="Password" />
+<button @onclick="PerformRegistration">Register</button>
+
+@code {
+  private string FullName;
+  private string Email;
+  private string Password;
+  private string ErrorMessage;
+
+  private async Task PerformRegistration() {
+    var success = await AuthService.RegisterAsync(FullName, Email, Password);
+    if(success) {
+      Navigation.NavigateTo("/login");
+    } else {
+      ErrorMessage = "Registration failed.";
+    }
+  }
+}

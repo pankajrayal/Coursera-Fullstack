@@ -1,0 +1,27 @@
+﻿@using SkillSnap.Client.Services
+
+@inject NavigationManager Navigation
+@inject AuthService AuthService
+
+<h3>Login</h3>
+@if(!string.IsNullOrEmpty(ErrorMessage)) {
+  <p style="color: red">@ErrorMessage</p>
+}
+<input @bind="Email" placeholder="Email" />
+<input @bind="Password" type="password" placeholder="Password" />
+<button @onclick="PerformLogin">Login</button>
+
+@code {
+  private string Email;
+  private string Password;
+  private string ErrorMessage;
+
+  private async Task PerformLogin() {
+    var success = await AuthService.LoginAsync(Email, Password);
+    if(success) {
+      Navigation.NavigateTo("/");
+    } else {
+      ErrorMessage = "Invalid credentials.";
+    }
+  }
+}
