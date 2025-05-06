@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "SkillSnap.Api\\SkillSnap.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "SkillSnap.Client\\SkillSnap.Client.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

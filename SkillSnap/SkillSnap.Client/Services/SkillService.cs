@@ -9,7 +9,7 @@ namespace SkillSnap.Client.Services {
       _httpClient = httpClient;
     }
     public async Task<List<Skill>> GetSkillsAsync() {
-      return await _httpClient.GetFromJsonAsync<List<Skill>>("api/skills");
+      return await _httpClient.GetFromJsonAsync<List<Skill>>("http://localhost:5226/api/skills");
     }
 
     public async Task AddSkillAsync(Skill newSkill) {

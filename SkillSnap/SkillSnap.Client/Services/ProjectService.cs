@@ -10,7 +10,7 @@ namespace SkillSnap.Client.Services {
     }
 
     public async Task<List<Project>> GetProjectsAsync() {
-      return await _httpClient.GetFromJsonAsync<List<Project>>("api/projects");
+      return await _httpClient.GetFromJsonAsync<List<Project>>("http://localhost:5226/api/projects");
     }
 
     public async Task AddProjectAsync(Project newProject) {

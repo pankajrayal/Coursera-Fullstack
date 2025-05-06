@@ -1,18 +1,33 @@
-﻿@using SkillSnap.Client.Services
+﻿@page "/login"
+
+@using SkillSnap.Client.Services
 
 @inject NavigationManager Navigation
 @inject AuthService AuthService
 @inject UserSessionService UserSessionService
 
-<h3>Login</h3>
-<h3>Welcome, @UserSessionService.Role</h3>
+<div class="login-container">
+  <div class="login-card">
+    <h2 class="text-center">Login</h2>
+    <h4 class="text-center">Welcome, @UserSessionService.Role</h4>
 
-@if(!string.IsNullOrEmpty(ErrorMessage)) {
-  <p style="color: red">@ErrorMessage</p>
-}
-<input @bind="Email" placeholder="Email" />
-<input @bind="Password" type="password" placeholder="Password" />
-<button @onclick="PerformLogin">Login</button>
+    @if(!string.IsNullOrEmpty(ErrorMessage)) {
+      <div class="alert alert-danger text-center">@ErrorMessage</div>
+    }
+
+    <form class="login-form" @onsubmit="PerformLogin">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input id="email" class="form-control" @bind="Email" placeholder="Enter your email" />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input id="password" class="form-control" @bind="Password" type="password" placeholder="Enter your password" />
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Login</button>
+    </form>
+  </div>
+</div>
 
 @code {
   private string Email;

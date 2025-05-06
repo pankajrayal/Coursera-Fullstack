@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using SkillSnap.Api.Data;
 using SkillSnap.Api.Models;
+using System.Diagnostics;
 
 namespace SkillSnap.Api.Controllers {
   [Authorize]
@@ -20,9 +21,12 @@ namespace SkillSnap.Api.Controllers {
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Project>>> GetProjects() {
       const string cacheKey = "projects";
+      Stopwatch stopwatch = Stopwatch.StartNew();
 
       if(!_cache.TryGetValue(cacheKey, out List<Project> projects)) {
         projects = await _context.Projects.AsNoTracking().ToListAsync();
+        stopwatch.Stop();
+        Console.WriteLine($"GetProjects Execution Time: {stopwatch.ElapsedMilliseconds} ms");
 
         var cacheOptions = new MemoryCacheEntryOptions()
             .SetAbsoluteExpiration(TimeSpan.FromMinutes(5))

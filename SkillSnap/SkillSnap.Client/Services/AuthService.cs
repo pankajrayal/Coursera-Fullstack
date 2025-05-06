@@ -13,7 +13,7 @@ namespace SkillSnap.Client.Services {
     }
 
     public async Task<bool> LoginAsync(string email, string password) {
-      var response = await _httpClient.PostAsJsonAsync("api/auth/login", new { Email = email, Password = password });
+      var response = await _httpClient.PostAsJsonAsync("http://localhost:5226/api/auth/login", new { Email = email, Password = password });
 
       if(!response.IsSuccessStatusCode) return false;
 
@@ -25,7 +25,7 @@ namespace SkillSnap.Client.Services {
     }
 
     public async Task<bool> RegisterAsync(string fullName, string email, string password) {
-      var response = await _httpClient.PostAsJsonAsync("api/auth/register", new {
+      var response = await _httpClient.PostAsJsonAsync("http://localhost:5226/api/auth/register", new {
         FullName = fullName,
         Email = email,
         Password = password
