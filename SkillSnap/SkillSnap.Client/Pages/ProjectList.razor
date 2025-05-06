@@ -1,10 +1,14 @@
-﻿@using SkillSnap.Client.Models
+﻿
+@using SkillSnap.Client.Models
+@using SkillSnap.Client.Services
+
+@inject ProjectService ProjectService
+
 @code {
-  private List<Project> Projects = new List<Project>
-      {
-        new Project { Title = "Task Tracker", Description = "Manage tasks efficiently" },
-        new Project { Title = "Weather App", Description = "Forecast weather using APIs" }
-    };
+  private List<Project> Projects;
+  protected override async Task OnInitializedAsync() {
+    Projects = await ProjectService.GetProjectsAsync();
+  }
 }
 
 @foreach(var project in Projects) {

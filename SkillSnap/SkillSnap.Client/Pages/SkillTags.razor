@@ -1,5 +1,14 @@
-﻿@code {
-  private List<string> Skills = new List<string> { "C#", "Blazor", "SQL" };
+﻿@using SkillSnap.Client.Models
+@using SkillSnap.Client.Services
+
+@inject SkillService SkillService
+
+@code {
+  private List<Skill> Skills;
+
+  protected override async Task OnInitializedAsync() {
+    Skills = await SkillService.GetSkillsAsync();
+  }
 }
 
 <div class="skills-container">
